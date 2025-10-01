@@ -17,7 +17,7 @@ uid = "42a78221-416b-44aa-07ba-7ad811835d0691422ded"
 
 [[extensions.targeting]]
 module = "./src/Checkout.tsx"
-target = "purchase.checkout.block.render"
+target = "purchase.checkout.cart-line-list.render-after"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
