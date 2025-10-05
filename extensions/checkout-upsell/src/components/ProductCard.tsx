@@ -43,14 +43,21 @@ interface ProductVariantData {
 interface ProductCardProps {
   /** The product variant node containing product information */
   node: ProductVariantNode;
-  /** Selection type - 'radio' for single selection, 'checkbox' for multiple selection */
-  type?: 'radio' | 'checkbox';
   /** Array of all product variants for managing radio button behavior */
   productVariants?: ProductVariantData[];
+  /** Currently selected variant */
+  currentVariant?: string | null;
+  /** Function to update currently selected variant */
+  setCurrentVariant?: (variant: string | null) => void;
   /** Loading state indicator */
   loading?: boolean;
   /** Function to update loading state */
   setLoading?: (loading: boolean) => void;
+  /** Transition state for smooth animations */
+  isTransitioning?: boolean;
+  productCount: string;
+  cartProductsFromVariants?: any[];
+  notInCartVariants?: any[];
 }
 
 /**
@@ -66,10 +73,13 @@ interface ProductCardProps {
  */
 export default function ProductCard({
   node,
-  type,
-  productVariants,
+  currentVariant,
   loading,
   setLoading,
+  isTransitioning,
+  productCount,
+  cartProductsFromVariants,
+  notInCartVariants,
 }: ProductCardProps) {
   const [isChecked, setIsChecked] = useState(false);
   const cartLines = useCartLines();
@@ -77,16 +87,6 @@ export default function ProductCard({
   
   /** Find if current product is already in cart */
   const currentCartLine = cartLines.find((line) => line.merchandise.id === node.id);
-
-  /**
-   * Get products currently in cart from the provided productVariants
-   * Used for radio button behavior to remove other selections
-   */
-  const cartProductsFromVariants = productVariants
-    ?.map((variant) =>
-      cartLines.find((line) => line.merchandise.id === variant.data.node.id)
-    )
-    .filter(Boolean) || [];
 
   /**
    * Initialize checkbox state based on cart contents
@@ -99,7 +99,7 @@ export default function ProductCard({
    * Remove other selected products for radio button behavior
    */
   const removeOtherCartItems = useCallback(async () => {
-    if (type !== 'radio' || !cartProductsFromVariants.length) return;
+    if (productCount !== "1") return;
     
     const removePromises = cartProductsFromVariants.map((product) =>
       applyCartLinesChange({
@@ -110,7 +110,7 @@ export default function ProductCard({
     );
     
     await Promise.all(removePromises);
-  }, [type, cartProductsFromVariants, applyCartLinesChange]);
+  }, [productCount, cartProductsFromVariants, applyCartLinesChange]);
 
   /**
    * Add product to cart
@@ -165,18 +165,35 @@ export default function ProductCard({
       setLoading?.(false);
     }
   }, [isChecked, loading, setLoading, removeOtherCartItems, addToCart, removeFromCart]);
+  
+  // Determine card visibility and styling for smooth transitions
+  const isCurrentCard = currentVariant === node.id;
+  
+  // Create smooth transition effect with background changes
+  const getCardBackground = () => {
+    if (isTransitioning && !isCurrentCard) return "transparent";
+    if (isTransitioning && isCurrentCard) return "subdued";
+    return isChecked ? "base" : "subdued";
+  };
 
+  const getCardBorderWidth = () => {
+    if (isTransitioning) return "base";
+    return isChecked ? "medium" : "base";
+  };
+  
+  
   return (
     <Pressable
-      disabled={loading}
+      display={!isCurrentCard ? "none" : "block"}
+      disabled={loading || isTransitioning || (cartProductsFromVariants.length === Number(productCount) && productCount !== "1" && notInCartVariants.find(line => line.data.node.id === node.id))}
       onPress={handlePress}
-      background={isChecked ? "base" : "subdued"}
+      background={getCardBackground()}
       border="base"
-      borderWidth={isChecked ? "medium" : "base"}
+      borderWidth={getCardBorderWidth()}
       cornerRadius="base"
       padding="base"
       accessibilityRole="button"
-      accessibilityLabel={`${isChecked ? 'Remove' : 'Add'} ${node.product.title} ${type === 'radio' ? 'selection' : 'to cart'}`}
+      accessibilityLabel={`${isChecked ? 'Remove' : 'Add'} ${node.product.title} to cart`}
     >
       <InlineLayout
         blockAlignment="center"
@@ -200,7 +217,7 @@ export default function ProductCard({
         </BlockStack>
         <Checkbox 
           checked={isChecked}
-          accessibilityLabel={`${type === 'radio' ? 'Select' : 'Add to cart'}: ${node.product.title}`}
+          accessibilityLabel={`Add to cart: ${node.product.title}`}
         />
       </InlineLayout>
     </Pressable>

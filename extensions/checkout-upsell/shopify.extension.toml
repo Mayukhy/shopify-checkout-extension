@@ -45,6 +45,13 @@ api_access = true
 # https://shopify.dev/docs/api/checkout-ui-extensions/latest/configuration#settings-definition
 
 [extensions.settings]
+
+[[extensions.settings.fields]]
+key = "product_count"
+type = "number_integer"
+name = "Max product count"
+description = "Maximum number of products to be added at a time"
+
 [[extensions.settings.fields]]
 key = "product_variant_1"
 type = "variant_reference"
