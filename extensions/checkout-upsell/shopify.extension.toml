@@ -47,6 +47,12 @@ api_access = true
 [extensions.settings]
 
 [[extensions.settings.fields]]
+key = "products_view"
+type = "boolean"
+name = "Show carousel view"
+description = "Configure products view carousel or stack"
+
+[[extensions.settings.fields]]
 key = "product_count"
 type = "number_integer"
 name = "Max product count"

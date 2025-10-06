@@ -58,6 +58,7 @@ interface ProductCardProps {
   productCount: string;
   cartProductsFromVariants?: any[];
   notInCartVariants?: any[];
+  productsView: boolean;
 }
 
 /**
@@ -70,6 +71,13 @@ interface ProductCardProps {
  * @param props.productVariants - All available product variants
  * @param props.loading - Loading state
  * @param props.setLoading - Function to update loading state
+ * @param props.isTransitioning - Transition state for animations
+ * @param props.currentVariant - Currently selected variant ID
+ * @param props.setCurrentVariant - Function to update selected variant ID
+ * @param props.productCount - Maximum number of products that can be added at once
+ * @param props.cartProductsFromVariants - Products currently in cart from the provided variants
+ * @param props.notInCartVariants - Variants not currently in cart
+ * @return JSX.Element - Rendered ProductCard component
  */
 export default function ProductCard({
   node,
@@ -80,6 +88,7 @@ export default function ProductCard({
   productCount,
   cartProductsFromVariants,
   notInCartVariants,
+  productsView
 }: ProductCardProps) {
   const [isChecked, setIsChecked] = useState(false);
   const cartLines = useCartLines();
@@ -184,7 +193,7 @@ export default function ProductCard({
   
   return (
     <Pressable
-      display={!isCurrentCard ? "none" : "block"}
+      display={(!isCurrentCard && productsView) ? "none" : "block"}
       disabled={loading || isTransitioning || (cartProductsFromVariants.length === Number(productCount) && productCount !== "1" && notInCartVariants.find(line => line.data.node.id === node.id))}
       onPress={handlePress}
       background={getCardBackground()}

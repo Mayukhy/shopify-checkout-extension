@@ -25,7 +25,7 @@ function Extension() {
   const translate = useTranslate();
   const { extension, query } = useApi();
   const instructions = useInstructions();
-  const { product_variant_1, product_variant_2, product_variant_3, product_count } =
+  const { product_variant_1, product_variant_2, product_variant_3, product_count, products_view } =
     useSettings();
 
   const variantIdArr = useMemo(() => {
@@ -157,11 +157,11 @@ function Extension() {
             loading={loading}
             setLoading={setLoading}
             isTransitioning={isTransitioning}
+            productsView={Boolean(products_view)}
           />
         ))}
-
       {/* Carousel Navigation */}
-      { productVariants.length > 1 &&
+      { productVariants.length > 1 &&  products_view &&
       <BlockStack spacing="base">
         {/* Navigation Arrows */}
         <InlineStack
