@@ -1,78 +1,90 @@
-# Shopify App Template - Extension only
+# Shopify Checkout Extension
 
-This is a template for building an [extension-only Shopify app](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app). It contains the basics for building a Shopify app that uses only app extensions.
+This project is a Shopify app built primarily as a **Checkout UI Extension**. It allows for adding custom functionality to the Shopify checkout experience via a dedicated extension deployed to merchants' stores.
 
-This template doesn't include a server or the ability to embed a page in the Shopify Admin. If you want either of these capabilities, choose the [Remix app template](https://github.com/Shopify/shopify-app-template-remix) instead.
+---
 
-Whether you choose to use this template or another one, you can use your preferred package manager and the Shopify CLI with [these steps](#installing-the-template).
+## Live Demo
 
-## Benefits
+**Live Store:**  
+[https://checkout-extension-store-25.myshopify.com/?_ab=0&_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVqYUdWamEyOTFkQzFsZUhSbGJuTnBiMjR0YzNSdmNtVXRNalV1YlhsemFHOXdhV1o1TG1OdmJRWTZCa1ZVIiwiZXhwIjoiMjAyNS0xMC0wMlQwOTo1Nzo0My41MzBaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--2e6a953f8823e693d8e468a6b436bfb77c60fed2&_fd=0&_sc=1&key=1c205c44df2370564d13c315b3cdce6bcf75dfbd87dd01021aef845385bec1dd&preview_theme_id=181733458285](https://checkout-extension-store-25.myshopify.com/?_ab=0&_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVqYUdWamEyOTFkQzFsZUhSbGJuTnBiMjR0YzNSdmNtVXRNalV1YlhsemFHOXdhV1o1TG1OdmJRWTZCa1ZVIiwiZXhwIjoiMjAyNS0xMC0wMlQwOTo1Nzo0My41MzBaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--2e6a953f8823e693d8e468a6b436bfb77c60fed2&_fd=0&_sc=1&key=1c205c44df2370564d13c315b3cdce6bcf75dfbd87dd01021aef845385bec1dd&preview_theme_id=181733458285)  
+**Store Password:** `123123`
 
-Shopify apps are built on a variety of Shopify tools to create a great merchant experience. The [create an app](https://shopify.dev/docs/apps/getting-started/create) tutorial in our developer documentation will guide you through creating a Shopify app.
+---
 
-This app template does little more than install the CLI and scaffold a repository.
+## Project Structure
 
-## Getting started
+- `README.md` – This file.
+- `extensions/checkout-upsell/` – Main folder for the checkout UI extension code.
+    - `src/Checkout.tsx` – The extension's main source code for additional checkout UI.
+    - `shopify.extension.toml` – Configuration for the extension’s integration with Shopify checkout.
+    - `locales/` – Localization files.
+- `.vscode/`, `.gitignore`, `.graphqlrc.js`, `.npmrc`, etc. – Project configuration and settings.
+- `package.json`, `package-lock.json` – Dependencies and package management.
+- `shopify.app.toml` – App configuration for Shopify integration.
+
+---
+
+## Features
+
+- **Shopify Checkout UI Extension:**  
+  Fully leverages [Shopify checkout extensibility](https://shopify.dev/docs/apps/checkout).
+- **Custom Functionality:**  
+  Add banners, upsells, or additional checkout logic at defined extension points.
+- **Easy Setup:**  
+  Yarn/NPM/PNPM compatible. Just clone and run.
+
+---
+
+## Getting Started
 
 ### Requirements
 
-1. You must [download and install Node.js](https://nodejs.org/en/download/) if you don't already have it.
-1. You must [create a Shopify partner account](https://partners.shopify.com/signup) if you don’t have one.
-1. You must create a store for testing if you don't have one, either a [development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) or a [Shopify Plus sandbox store](https://help.shopify.com/en/partners/dashboard/managing-stores/plus-sandbox-store).
+1. [Node.js](https://nodejs.org/en/download/) (LTS recommended)
+2. A [Shopify Partner account](https://partners.shopify.com/signup).
+3. A [Shopify development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) for testing.
 
-### Installing the template
+### Installation
 
-This template can be installed using your preferred package manager:
+Clone the repository and install dependencies:
 
-Using yarn:
-
-```shell
-yarn create @shopify/app
+```sh
+git clone https://github.com/Mayukhy/shopify-checkout-extension.git
+cd shopify-checkout-extension
+yarn install # or npm install or pnpm install
 ```
 
-Using npm:
+### Development
 
-```shell
-npm init @shopify/app@latest
-```
+Start the extension with your preferred package manager:
 
-Using pnpm:
-
-```shell
-pnpm create @shopify/app@latest
-```
-
-This will clone the template and install the required dependencies.
-
-#### Local Development
-
-[The Shopify CLI](https://shopify.dev/docs/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables and runs commands in parallel.
-
-You can develop locally using your preferred package manager. Run one of the following commands from the root of your app.
-
-Using yarn:
-
-```shell
+```sh
 yarn dev
-```
-
-Using npm:
-
-```shell
+# or
 npm run dev
-```
-
-Using pnpm:
-
-```shell
+# or
 pnpm run dev
 ```
 
-Open the URL generated in your console. Once you grant permission to the app, you can start development (such as generating extensions).
+Follow the CLI prompts to preview the extension in your Shopify store.
 
-## Developer resources
+---
+
+## More Resources
 
 - [Introduction to Shopify apps](https://shopify.dev/docs/apps/getting-started)
-- [App extensions](https://shopify.dev/docs/apps/build/app-extensions)
-- [Extension only apps](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app)
+- [Shopify App Extensions](https://shopify.dev/docs/apps/build/app-extensions)
+- [Checkout UI extension documentation](https://shopify.dev/api/checkout-extensions)
 - [Shopify CLI](https://shopify.dev/docs/apps/tools/cli)
+
+---
+
+## Security
+
+See `SECURITY.md` for security policies.
+
+---
+
+## License
+
+See repository for license details.
